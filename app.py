@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-import requests
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auth.db'
@@ -30,7 +29,7 @@ def index():
         return render_template('index.html')
 
 
-@app.route('/profile', methods=['POST', 'GET'])
+@app.route('/profile/', methods=['POST', 'GET'])
 def profile():
     access_token = request.args['access_token']
     user_id = request.args['user_id']
