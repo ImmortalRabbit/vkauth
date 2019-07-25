@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+import requests
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auth.db'
@@ -36,9 +37,10 @@ def profile():
     access_token_url = 'https://oauth.vk.com/authorize?client_id=' + vk_id \
                        + '&display=page&redirect_uri=' + vk_url \
                        + '&client_secret=' + vk_secret + '&code=' + access_code
-    token = request.get(access_token_url).content
+    token = requests.get(access_token_url).content
     print(token)
     return render_template('profile.html')
+
 
 if __name__ == '__main__':
     app.run()
