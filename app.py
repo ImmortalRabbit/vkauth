@@ -38,8 +38,8 @@ def profile():
                        + '&display=page&redirect_uri=' + vk_url \
                        + '&client_secret=' + vk_secret + '&code=' + access_code
     token = requests.get(access_token_url).content
-    print(token)
-    return render_template('profile.html')
+    return token
+    # return render_template('profile.html')
 
 
 if __name__ == '__main__':
