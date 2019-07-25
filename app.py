@@ -7,7 +7,7 @@ db = SQLAlchemy(app)
 
 vk_id = '7069242'
 vk_secret = '0HGWyQwWskHkoyR9f2dz'
-vk_url = 'https://vkauth-web.herokuapp.com/'
+vk_url = 'https://vkauth-web.herokuapp.com/profile.html'
 
 
 class Auth(db.Model):
@@ -23,10 +23,8 @@ def index():
     if request.method == 'POST':
         access_code_url = 'https://oauth.vk.com/authorize?client_id='+ vk_id \
                           + '&display=page&redirect_uri='+ vk_url\
-                          + '&scope=friends&response_type=token&v=5.52'
+                          + '&scope=friends&response_type=code'
         return redirect(access_code_url)
-
-
     else:
         return render_template('index.html')
 
