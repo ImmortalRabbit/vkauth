@@ -34,7 +34,7 @@ def index():
 def profile():
     access_token = request.args.get('access_token')
     user_id = request.args.get('user_id')
-    print('User id ' + user_id)
+    print('User id ')
     print('Access token' + access_token)
     return render_template('profile.html')
 
