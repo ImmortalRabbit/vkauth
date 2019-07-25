@@ -7,7 +7,7 @@ db = SQLAlchemy(app)
 
 vk_id = '7069242'
 vk_secret = '0HGWyQwWskHkoyR9f2dz'
-vk_url = 'https://vkauth-web.herokuapp.com/profile'
+vk_url = 'https://vkauth-web.herokuapp.com/profile/'
 
 
 class Auth(db.Model):
