@@ -36,14 +36,14 @@ def index():
 @app.route('/profile/', methods=['POST', 'GET'])
 def profile():
     access_code = request.args['code']
-    access_code_url = 'https://oauth.vk.com/authorize?client_id=' + vk_id \
+    access_token_url = 'https://oauth.vk.com/access_token?client_id=' + vk_id \
                       + '&display=page&redirect_uri=' + vk_url \
                       + '&client_secret=' + vk_secret + '$code=' + access_code\
 
-    print(access_code_url)
+    # print(access_code_url)
     # user_id = request.args['user_id']
     # print(user_id)
-    print(access_code)
+    print(decoder(requests.get(access_token_url).json()))
     return render_template('profile.html')
 
 
