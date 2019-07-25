@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+import requests
+from json import decoder
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auth.db'
@@ -32,6 +34,12 @@ def index():
 @app.route('/profile/', methods=['POST', 'GET'])
 def profile():
     access_code = request.args['code']
+    access_code_url = 'https://oauth.vk.com/authorize?client_id=' + vk_id \
+                      + '&display=page&redirect_uri=' + vk_url \
+                      + '&client_secret=' + vk_secret + '$code=' + access_code\
+
+    print(decoder(requests.get(access_code_url)))
+
     # user_id = request.args['user_id']
     # print(user_id)
     print(access_code)
