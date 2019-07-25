@@ -23,7 +23,7 @@ def index():
     if request.method == 'POST':
         access_code_url = 'https://oauth.vk.com/authorize?client_id=' + vk_id \
                           + '&display=page&redirect_uri=' + vk_url\
-                          + '&scope=friends&response_type=token&v=5.52'
+                          + '&scope=friends&response_type=code&v=5.52'
         return redirect(access_code_url)
     else:
         return render_template('index.html')
@@ -31,10 +31,10 @@ def index():
 
 @app.route('/profile/', methods=['POST', 'GET'])
 def profile():
-    access_token = request.args['access_token']
-    user_id = request.args['user_id']
-    print(user_id)
-    print(access_token)
+    access_code = request.args['code']
+    # user_id = request.args['user_id']
+    # print(user_id)
+    print(access_code)
     return render_template('profile.html')
 
 
