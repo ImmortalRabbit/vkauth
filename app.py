@@ -38,8 +38,7 @@ def profile():
                       + '&display=page&redirect_uri=' + vk_url \
                       + '&client_secret=' + vk_secret + '$code=' + access_code\
 
-    print(decoder(requests.get(access_code_url)))
-
+    print(access_code_url)
     # user_id = request.args['user_id']
     # print(user_id)
     print(access_code)
