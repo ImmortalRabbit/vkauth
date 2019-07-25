@@ -32,7 +32,7 @@ def index():
 
 @app.route('/profile', methods=['POST', 'GET'])
 def profile():
-    access_token = request.args.get('access_token')
+    access_token = request.args.get('token')
     user_id = request.args.get('user_id')
     print('User id ')
     print('Access token' + access_token)
