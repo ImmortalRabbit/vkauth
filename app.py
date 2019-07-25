@@ -26,6 +26,8 @@ def index():
         access_code_url = 'https://oauth.vk.com/authorize?client_id=' + vk_id \
                           + '&display=page&redirect_uri=' + vk_url\
                           + '&scope=friends&response_type=code&v=5.52'
+        print("access_code_url")
+        print(access_code_url)
         return redirect(access_code_url)
     else:
         return render_template('index.html')
