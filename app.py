@@ -43,7 +43,11 @@ def profile():
     print(access_token_url)
     # user_id = request.args['user_id']
     # print(user_id)
-    print(requests.get(access_token_url).content)
+    data = requests.get(access_token_url).json()
+    access_token = data['access_token']
+    user_id = data['user_id']
+    print(access_token)
+    print(user_id)
     return render_template('profile.html')
 
 
