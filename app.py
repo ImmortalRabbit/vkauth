@@ -61,6 +61,7 @@ def profile():
 
     session['user'] = hashlib.md5(access_code.encode('utf-8'))
     session.permanent = True
+    app.secret_key = hashlib.md5(access_code.encode('utf-8'))
     app.permanent_session_lifetime = timedelta(seconds=expires_in)
 
     access_data_url = 'https://api.vk.com/method/users.get?user_id=' \
