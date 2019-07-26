@@ -48,13 +48,20 @@ def profile():
     user_id = data['user_id']
     access_data_url = 'https://api.vk.com/method/users.get?user_id='\
                       + str(user_id) + '&access_token=' + str(access_token)\
-                      + '&fields=first_name,last_name,friends.get' + '&v=5.52'
+                      + '&fields=first_name,last_name' + '&v=5.52'
     user_data = requests.get(access_data_url).content
-    return user_data
+    # return user_data
     # print(user_data['first_name'])
     # print(user_data['last_name'])
 
-    return render_template('profile.html')
+    access_friends_url = 'https://api.vk.com/method/friends.get?user_id='\
+                      + str(user_id) + '&access_token=' + str(access_token)\
+                      + '&count=5' + '&v=5.52'
+
+    friends_data = requests.get(access_friends_url).content
+    return friends_data
+
+    # return render_template('profile.html')
 
 
 if __name__ == '__main__':
