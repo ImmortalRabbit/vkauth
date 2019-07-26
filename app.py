@@ -56,7 +56,7 @@ def profile():
 
     access_friends_url = 'https://api.vk.com/method/friends.get?user_id='\
                       + str(user_id) + '&access_token=' + str(access_token)\
-                      + '&count=5&items=first_name,last_name' + '&v=5.52'
+                      + '&count=5&fields=first_name,last_name' + '&v=5.52'
 
     friends_data = requests.get(access_friends_url).content
     return friends_data
