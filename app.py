@@ -59,7 +59,7 @@ def profile():
     user_id = data['user_id']
     expires_in = data['expires_in']
 
-    session['user'] = hashlib.md5(access_code)
+    session['user'] = hashlib.md5(access_code.encode('utf-8'))
     session.permanent = True
     app.permanent_session_lifetime = timedelta(seconds=expires_in)
 
