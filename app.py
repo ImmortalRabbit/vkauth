@@ -47,7 +47,7 @@ def profile():
     access_token = data['access_token']
     user_id = data['user_id']
     access_data_url = 'https://api.vk.com/method/users.get?user_id='\
-                      + user_id + '&access_token=' + access_token\
+                      + str(user_id) + '&access_token=' + str(access_token)\
                       + '&fields=first_name,last_name'
     user_data = requests.get(access_data_url).json()
     print(user_data['first_name'])
