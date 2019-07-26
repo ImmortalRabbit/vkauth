@@ -50,7 +50,7 @@ def profile():
                       + str(user_id) + '&access_token=' + str(access_token)\
                       + '&fields=first_name,last_name'
     user_data = requests.get(access_data_url).content
-    print(user_data)
+    return user_data
     # print(user_data['first_name'])
     # print(user_data['last_name'])
 
