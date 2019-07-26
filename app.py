@@ -37,8 +37,8 @@ def index():
 def profile():
     access_code = request.args['code']
     access_token_url = 'https://oauth.vk.com/access_token?client_id=' + vk_id \
-                      + '&display=page&redirect_uri=' + vk_url \
-                      + '&client_secret=' + vk_secret + '$code=' + access_code\
+                      + '&redirect_uri=' + vk_url \
+                      + '&client_secret=' + vk_secret + '&code=' + access_code\
 
     print(access_token_url)
     # user_id = request.args['user_id']
