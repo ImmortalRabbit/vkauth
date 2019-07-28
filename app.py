@@ -1,11 +1,14 @@
 from datetime import timedelta
 
+import hashlib
+import os
+import requests
 from flask import Flask, render_template, request, redirect, session, app
 from flask_sqlalchemy import SQLAlchemy
-import requests, hashlib
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auth.db'
+app.secret_key = os.urandom(24)
 db = SQLAlchemy(app)
 
 vk_id = '7069242'
@@ -24,10 +27,10 @@ class Auth(db.Model):
     second_friend_sur_name = db.Column(db.String(200))
     third_friend_first_name = db.Column(db.String(200))
     third_friend_sur_name = db.Column(db.String(200))
-    fouth_friend_first_name = db.Column(db.String(200))
-    fouth_friend_sur_name = db.Column(db.String(200))
+    fourth_friend_first_name = db.Column(db.String(200))
+    fourth_friend_sur_name = db.Column(db.String(200))
     fifth_friend_first_name = db.Column(db.String(200))
-    first_friend_sur_name = db.Column(db.String(200))
+    fifth_friend_sur_name = db.Column(db.String(200))
 
     def __repr__(self):
         return self.user_id
@@ -61,7 +64,6 @@ def profile():
 
     session['user'] = hashlib.md5(access_code.encode('utf-8'))
     session.permanent = True
-    app.secret_key = hashlib.md5(access_code.encode('utf-8'))
     app.permanent_session_lifetime = timedelta(seconds=expires_in)
 
     access_data_url = 'https://api.vk.com/method/users.get?user_id=' \
