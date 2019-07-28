@@ -71,6 +71,9 @@ def profile():
                       + '&fields=first_name,last_name' + '&v=5.52'
     user_data = requests.get(access_data_url).content
     user_id = int(user_data['id'])
+
+    print(user_data['id'].decode('utf-8'))
+    print(user_data['id'])
     user_first_name = user_data['first_name']
     user_last_name = user_data['last_name']
 
