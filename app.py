@@ -93,6 +93,7 @@ def profile():
     db.session.commit()
 
     user = Auth.query.filter(user_id.in_(user_id)).all()
+    print(user)
 
     return render_template('profile.html')
 
