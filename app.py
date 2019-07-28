@@ -80,8 +80,7 @@ def profile():
                          + '&count=5&fields=first_name,last_name' + '&v=5.52'
     friends_data = requests.get(access_friends_url).content
     friends_json = json.loads(friends_data)
-    print(friends_json)
-    friends_items = [[friend['first_name'], friend['last_name']] for friend in friends_json['items']]
+    friends_items = [[friend['first_name'], friend['last_name']] for friend in friends_json['response']['items']]
 
     new_user = Auth(user_id=user_id, first_name=user_first_name, last_name=user_last_name,
                     first_friend_first_name=friends_items[0][0], first_friend_sur_name=friends_items[0][1],
@@ -94,8 +93,6 @@ def profile():
     db.session.commit()
 
     user = Auth.query.filter(user_id.in_(user_id)).all()
-
-    print(user)
 
     return render_template('profile.html')
 
