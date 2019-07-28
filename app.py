@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-import hashlib
+import json
 import os
 import requests
 from flask import Flask, render_template, request, redirect, session, app
@@ -70,18 +70,18 @@ def profile():
                       + str(user_id) + '&access_token=' + str(access_token) \
                       + '&fields=first_name,last_name' + '&v=5.52'
     user_data = requests.get(access_data_url).content
-    user_id = 1
-
-    # print(user_data['id'].decode('utf-8'))
-    print(user_data)
-    user_first_name = user_data['response']['first_name']
-    user_last_name = user_data['response']['last_name']
+    user_json = json.loads(user_data)
+    user_id = user_json['response'][0]['id']
+    user_first_name = user_json['response'][0]['first_name']
+    user_last_name = user_json['response'][0]['last_name']
 
     access_friends_url = 'https://api.vk.com/method/friends.get?user_id=' \
                          + str(user_id) + '&access_token=' + str(access_token) \
                          + '&count=5&fields=first_name,last_name' + '&v=5.52'
     friends_data = requests.get(access_friends_url).content
-    friends_items = [[friend['first_name'], friend['last_name']] for friend in friends_data['items']]
+    friends_json = json.loads(friends_data)
+    print(friends_json)
+    friends_items = [[friend['first_name'], friend['last_name']] for friend in friends_json['items']]
 
     new_user = Auth(user_id=user_id, first_name=user_first_name, last_name=user_last_name,
                     first_friend_first_name=friends_items[0][0], first_friend_sur_name=friends_items[0][1],
