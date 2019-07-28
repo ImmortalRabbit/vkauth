@@ -86,7 +86,7 @@ def profile():
                     first_friend_first_name=friends_items[0][0], first_friend_sur_name=friends_items[0][1],
                     second_friend_first_name=friends_items[1][0], second_friend_sur_name=friends_items[1][1],
                     third_friend_first_name=friends_items[2][0], third_friend_sur_name=friends_items[2][1],
-                    fouth_friend_first_name=friends_items[3][0], fouth_friend_sur_name=friends_items[3][1],
+                    fourth_friend_first_name=friends_items[3][0], fourth_friend_sur_name=friends_items[3][1],
                     fifth_friend_first_name=friends_items[4][0], fifth_friend_sur_name=friends_items[4][1])
 
     db.session.add(new_user)
