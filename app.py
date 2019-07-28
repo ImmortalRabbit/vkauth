@@ -70,7 +70,7 @@ def profile():
                       + str(user_id) + '&access_token=' + str(access_token) \
                       + '&fields=first_name,last_name' + '&v=5.52'
     user_data = requests.get(access_data_url).content
-    user_id = int(user_data['id'])
+    user_id = 1
 
     print(user_data['id'].decode('utf-8'))
     print(user_data['id'])
