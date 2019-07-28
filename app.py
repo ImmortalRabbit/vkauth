@@ -72,7 +72,7 @@ def profile():
     user_data = requests.get(access_data_url).content
     user_id = 1
 
-    print(user_data['id'].decode('utf-8'))
+    # print(user_data['id'].decode('utf-8'))
     print(user_data['id'])
     user_first_name = user_data['first_name']
     user_last_name = user_data['last_name']
