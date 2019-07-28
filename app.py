@@ -74,8 +74,8 @@ def profile():
 
     # print(user_data['id'].decode('utf-8'))
     print(user_data)
-    user_first_name = user_data['first_name']
-    user_last_name = user_data['last_name']
+    user_first_name = user_data['response']['first_name']
+    user_last_name = user_data['response']['last_name']
 
     access_friends_url = 'https://api.vk.com/method/friends.get?user_id=' \
                          + str(user_id) + '&access_token=' + str(access_token) \
