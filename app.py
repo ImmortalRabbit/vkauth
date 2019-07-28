@@ -82,7 +82,7 @@ def profile():
     friends_json = json.loads(friends_data)
     friends_items = [[friend['first_name'], friend['last_name']] for friend in friends_json['response']['items']]
 
-    new_user = Auth(user_id=user_id, first_name=user_first_name, last_name=user_last_name,
+    new_user = Auth(user_id=user_id, first_name=user_first_name, sur_name=user_last_name,
                     first_friend_first_name=friends_items[0][0], first_friend_sur_name=friends_items[0][1],
                     second_friend_first_name=friends_items[1][0], second_friend_sur_name=friends_items[1][1],
                     third_friend_first_name=friends_items[2][0], third_friend_sur_name=friends_items[2][1],
