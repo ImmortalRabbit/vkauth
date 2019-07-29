@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auth.db'
 app.secret_key = os.urandom(24)
-db = SQLAlchemy(app)
+db = SQLAlchemy(app)    
 
 vk_id = '7069242'
 vk_secret = '0HGWyQwWskHkoyR9f2dz'
