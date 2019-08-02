@@ -3,7 +3,7 @@ from datetime import timedelta
 import json
 import os
 import requests
-from flask import Flask, render_template, request, redirect, session, app
+from flask import Flask, render_template, request, redirect, session, app, make_response
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -38,9 +38,6 @@ class Auth(db.Model):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    if 'user' in session:
-        return redirect(vk_url)
-
     if request.method == 'POST':
         access_code_url = 'https://oauth.vk.com/authorize?client_id=' + vk_id \
                           + '&display=page&redirect_uri=' + vk_url \
@@ -96,15 +93,18 @@ def profile():
         db.session.commit()
 
     check_user = db.session.query(Auth).filter_by(user_id=user_id).first()
-    person = check_user.first_name + check_user.sur_name
-    friend_first = check_user.first_friend_first_name + check_user.first_friend_sur_name
-    friend_second = check_user.second_friend_first_name + check_user.second_friend_sur_name
-    friend_third = check_user.third_friend_first_name + check_user.third_friend_sur_name
-    friend_fourth = check_user.fourth_friend_first_name + check_user.fourth_friend_sur_name
-    friend_fifth = check_user.fifth_friend_first_name + check_user.fifth_friend_sur_name
+    person = check_user.first_name + " " + check_user.sur_name
+    friend_first = check_user.first_friend_first_name + " " + check_user.first_friend_sur_name
+    friend_second = check_user.second_friend_first_name + " " + check_user.second_friend_sur_name
+    friend_third = check_user.third_friend_first_name + " " + check_user.third_friend_sur_name
+    friend_fourth = check_user.fourth_friend_first_name + " " + check_user.fourth_friend_sur_name
+    friend_fifth = check_user.fifth_friend_first_name + " " + check_user.fifth_friend_sur_name
 
-    return render_template('profile.html', person=person, friend_first=friend_first, friend_second=friend_second,
-                           friend_third=friend_third, friend_fourth=friend_fourth, friend_fifth=friend_fifth)
+    resp = make_response(render_template('profile.html', person=person, friend_first=friend_first,
+                                         friend_second=friend_second, friend_third=friend_third,
+                                         friend_fourth=friend_fourth, friend_fifth=friend_fifth))
+    resp.set_cookie('user', check_user.user_id, max_age=expires_in)
+    return resp
 
 
 if __name__ == '__main__':
