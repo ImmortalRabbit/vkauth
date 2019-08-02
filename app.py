@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auth.db'
 app.secret_key = os.urandom(24)
-db = SQLAlchemy(app)    
+db = SQLAlchemy(app)
 
 vk_id = '7069242'
 vk_secret = '0HGWyQwWskHkoyR9f2dz'
@@ -83,21 +83,28 @@ def profile():
     friends_items = [[friend['first_name'], friend['last_name']] for friend in friends_json['response']['items']]
 
     check_user = db.session.query(Auth).filter_by(user_id=user_id).first()
-    print(check_user)
-    new_user = Auth(user_id=user_id, first_name=user_first_name, sur_name=user_last_name,
-                    first_friend_first_name=friends_items[0][0], first_friend_sur_name=friends_items[0][1],
-                    second_friend_first_name=friends_items[1][0], second_friend_sur_name=friends_items[1][1],
-                    third_friend_first_name=friends_items[2][0], third_friend_sur_name=friends_items[2][1],
-                    fourth_friend_first_name=friends_items[3][0], fourth_friend_sur_name=friends_items[3][1],
-                    fifth_friend_first_name=friends_items[4][0], fifth_friend_sur_name=friends_items[4][1])
 
-    db.session.add(new_user)
-    db.session.commit()
+    if check_user is not None:
+        new_user = Auth(user_id=user_id, first_name=user_first_name, sur_name=user_last_name,
+                        first_friend_first_name=friends_items[0][0], first_friend_sur_name=friends_items[0][1],
+                        second_friend_first_name=friends_items[1][0], second_friend_sur_name=friends_items[1][1],
+                        third_friend_first_name=friends_items[2][0], third_friend_sur_name=friends_items[2][1],
+                        fourth_friend_first_name=friends_items[3][0], fourth_friend_sur_name=friends_items[3][1],
+                        fifth_friend_first_name=friends_items[4][0], fifth_friend_sur_name=friends_items[4][1])
+
+        db.session.add(new_user)
+        db.session.commit()
 
     check_user = db.session.query(Auth).filter_by(user_id=user_id).first()
-    print(check_user.first_name)
+    person = check_user.first_name + check_user.sur_name
+    friend_first = check_user.first_friend_first_name + check_user.first_friend_sur_name
+    friend_second = check_user.second_friend_first_name + check_user.second_friend_sur_name
+    friend_third = check_user.third_friend_first_name + check_user.third_friend_sur_name
+    friend_fourth = check_user.fourth_friend_first_name + check_user.fourth_friend_sur_name
+    friend_fifth = check_user.fifth_friend_first_name + check_user.fifth_friend_sur_name
 
-    return render_template('profile.html')
+    return render_template('profile.html', person=person, friend_first=friend_first, friend_second=friend_second,
+                           friend_third=friend_third, friend_fourth=friend_fourth, friend_fifth=friend_fifth)
 
 
 if __name__ == '__main__':
