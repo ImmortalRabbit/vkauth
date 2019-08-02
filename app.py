@@ -95,7 +95,7 @@ def profile():
     db.session.commit()
 
     check_user = db.session.query(Auth).filter_by(user_id=user_id).first()
-    print(check_user)
+    print(check_user.first_name)
 
     return render_template('profile.html')
 
