@@ -82,6 +82,8 @@ def profile():
     friends_json = json.loads(friends_data)
     friends_items = [[friend['first_name'], friend['last_name']] for friend in friends_json['response']['items']]
 
+    check_user = db.session.query(Auth).filter_by(user_id=user_id).first()
+    print(check_user)
     new_user = Auth(user_id=user_id, first_name=user_first_name, sur_name=user_last_name,
                     first_friend_first_name=friends_items[0][0], first_friend_sur_name=friends_items[0][1],
                     second_friend_first_name=friends_items[1][0], second_friend_sur_name=friends_items[1][1],
@@ -92,8 +94,6 @@ def profile():
     db.session.add(new_user)
     db.session.commit()
 
-    user = Auth.query.filter(user_id.in_(user_id)).all()
-    print(user)
 
     return render_template('profile.html')
 
