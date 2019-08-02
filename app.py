@@ -84,7 +84,7 @@ def profile():
 
     check_user = db.session.query(Auth).filter_by(user_id=user_id).first()
 
-    if check_user is not None:
+    if check_user is None:
         new_user = Auth(user_id=user_id, first_name=user_first_name, sur_name=user_last_name,
                         first_friend_first_name=friends_items[0][0], first_friend_sur_name=friends_items[0][1],
                         second_friend_first_name=friends_items[1][0], second_friend_sur_name=friends_items[1][1],
