@@ -55,6 +55,7 @@ def index():
 def profile():
     if 'user' in request.cookies:
         user_id = request.cookies['user']
+        return render_profile(user_id)
     else:
         access_code = request.args['code']
         access_token_url = 'https://oauth.vk.com/access_token?client_id=' + vk_id \
@@ -94,6 +95,10 @@ def profile():
             db.session.add(new_user)
             db.session.commit()
 
+        return render_profile(user_id, expires_in)
+
+
+def render_profile(user_id, expires_in=None):
     get_user = db.session.query(Auth).filter_by(user_id=user_id).first()
     person = get_user.first_name + " " + get_user.sur_name
     friend_first = get_user.first_friend_first_name + " " + get_user.first_friend_sur_name
@@ -105,12 +110,10 @@ def profile():
     resp = make_response(render_template('profile.html', person=person, friend_first=friend_first,
                                          friend_second=friend_second, friend_third=friend_third,
                                          friend_fourth=friend_fourth, friend_fifth=friend_fifth))
-
-    if 'user' is not request.cookies:
+    if expires_in is not None:
         resp.set_cookie('user', get_user.user_id, max_age=expires_in)
 
     return resp
-
 
 if __name__ == '__main__':
     app.run()
