@@ -53,56 +53,62 @@ def index():
 
 @app.route('/profile/', methods=['POST', 'GET'])
 def profile():
-    access_code = request.args['code']
-    access_token_url = 'https://oauth.vk.com/access_token?client_id=' + vk_id \
-                       + '&redirect_uri=' + vk_url \
-                       + '&client_secret=' + vk_secret + '&code=' + access_code
-    data = requests.get(access_token_url).json()
-    access_token = data['access_token']
-    user_id = data['user_id']
-    expires_in = data['expires_in']
+    if 'user' in request.cookies:
+        user_id = request.cookies['user']
+    else:
+        access_code = request.args['code']
+        access_token_url = 'https://oauth.vk.com/access_token?client_id=' + vk_id \
+                           + '&redirect_uri=' + vk_url \
+                           + '&client_secret=' + vk_secret + '&code=' + access_code
+        data = requests.get(access_token_url).json()
+        access_token = data['access_token']
+        user_id = data['user_id']
+        expires_in = data['expires_in']
 
-    access_data_url = 'https://api.vk.com/method/users.get?user_id=' \
-                      + str(user_id) + '&access_token=' + str(access_token) \
-                      + '&fields=first_name,last_name' + '&v=5.52'
-    user_data = requests.get(access_data_url).content
-    user_json = json.loads(user_data)
-    user_id = user_json['response'][0]['id']
-    user_first_name = user_json['response'][0]['first_name']
-    user_last_name = user_json['response'][0]['last_name']
+        access_data_url = 'https://api.vk.com/method/users.get?user_id=' \
+                          + str(user_id) + '&access_token=' + str(access_token) \
+                          + '&fields=first_name,last_name' + '&v=5.52'
+        user_data = requests.get(access_data_url).content
+        user_json = json.loads(user_data)
+        user_id = user_json['response'][0]['id']
+        user_first_name = user_json['response'][0]['first_name']
+        user_last_name = user_json['response'][0]['last_name']
 
-    access_friends_url = 'https://api.vk.com/method/friends.get?user_id=' \
-                         + str(user_id) + '&access_token=' + str(access_token) \
-                         + '&count=5&fields=first_name,last_name' + '&v=5.52'
-    friends_data = requests.get(access_friends_url).content
-    friends_json = json.loads(friends_data)
-    friends_items = [[friend['first_name'], friend['last_name']] for friend in friends_json['response']['items']]
+        access_friends_url = 'https://api.vk.com/method/friends.get?user_id=' \
+                             + str(user_id) + '&access_token=' + str(access_token) \
+                             + '&count=5&fields=first_name,last_name' + '&v=5.52'
+        friends_data = requests.get(access_friends_url).content
+        friends_json = json.loads(friends_data)
+        friends_items = [[friend['first_name'], friend['last_name']] for friend in friends_json['response']['items']]
 
-    check_user = db.session.query(Auth).filter_by(user_id=user_id).first()
+        check_user = db.session.query(Auth).filter_by(user_id=user_id).first()
 
-    if check_user is None:
-        new_user = Auth(user_id=user_id, first_name=user_first_name, sur_name=user_last_name,
-                        first_friend_first_name=friends_items[0][0], first_friend_sur_name=friends_items[0][1],
-                        second_friend_first_name=friends_items[1][0], second_friend_sur_name=friends_items[1][1],
-                        third_friend_first_name=friends_items[2][0], third_friend_sur_name=friends_items[2][1],
-                        fourth_friend_first_name=friends_items[3][0], fourth_friend_sur_name=friends_items[3][1],
-                        fifth_friend_first_name=friends_items[4][0], fifth_friend_sur_name=friends_items[4][1])
+        if check_user is None:
+            new_user = Auth(user_id=user_id, first_name=user_first_name, sur_name=user_last_name,
+                            first_friend_first_name=friends_items[0][0], first_friend_sur_name=friends_items[0][1],
+                            second_friend_first_name=friends_items[1][0], second_friend_sur_name=friends_items[1][1],
+                            third_friend_first_name=friends_items[2][0], third_friend_sur_name=friends_items[2][1],
+                            fourth_friend_first_name=friends_items[3][0], fourth_friend_sur_name=friends_items[3][1],
+                            fifth_friend_first_name=friends_items[4][0], fifth_friend_sur_name=friends_items[4][1])
 
-        db.session.add(new_user)
-        db.session.commit()
+            db.session.add(new_user)
+            db.session.commit()
 
-    check_user = db.session.query(Auth).filter_by(user_id=user_id).first()
-    person = check_user.first_name + " " + check_user.sur_name
-    friend_first = check_user.first_friend_first_name + " " + check_user.first_friend_sur_name
-    friend_second = check_user.second_friend_first_name + " " + check_user.second_friend_sur_name
-    friend_third = check_user.third_friend_first_name + " " + check_user.third_friend_sur_name
-    friend_fourth = check_user.fourth_friend_first_name + " " + check_user.fourth_friend_sur_name
-    friend_fifth = check_user.fifth_friend_first_name + " " + check_user.fifth_friend_sur_name
+    get_user = db.session.query(Auth).filter_by(user_id=user_id).first()
+    person = get_user.first_name + " " + get_user.sur_name
+    friend_first = get_user.first_friend_first_name + " " + get_user.first_friend_sur_name
+    friend_second = get_user.second_friend_first_name + " " + get_user.second_friend_sur_name
+    friend_third = get_user.third_friend_first_name + " " + get_user.third_friend_sur_name
+    friend_fourth = get_user.fourth_friend_first_name + " " + get_user.fourth_friend_sur_name
+    friend_fifth = get_user.fifth_friend_first_name + " " + get_user.fifth_friend_sur_name
 
     resp = make_response(render_template('profile.html', person=person, friend_first=friend_first,
                                          friend_second=friend_second, friend_third=friend_third,
                                          friend_fourth=friend_fourth, friend_fifth=friend_fifth))
-    resp.set_cookie('user', check_user.user_id, max_age=expires_in)
+
+    if 'user' is not request.cookies:
+        resp.set_cookie('user', get_user.user_id, max_age=expires_in)
+
     return resp
 
 
