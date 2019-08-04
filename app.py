@@ -1,9 +1,8 @@
-from datetime import timedelta
-
 import json
 import os
+
 import requests
-from flask import Flask, render_template, request, redirect, session, app, make_response
+from flask import Flask, render_template, request, redirect, make_response
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -38,6 +37,10 @@ class Auth(db.Model):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    if 'user' in request.cookies:
+        print(request.cookies['user'])
+        return redirect('/profile/')
+
     if request.method == 'POST':
         access_code_url = 'https://oauth.vk.com/authorize?client_id=' + vk_id \
                           + '&display=page&redirect_uri=' + vk_url \
@@ -58,10 +61,6 @@ def profile():
     access_token = data['access_token']
     user_id = data['user_id']
     expires_in = data['expires_in']
-
-    session['user'] = access_code
-    session.permanent = True
-    app.permanent_session_lifetime = timedelta(seconds=expires_in)
 
     access_data_url = 'https://api.vk.com/method/users.get?user_id=' \
                       + str(user_id) + '&access_token=' + str(access_token) \
